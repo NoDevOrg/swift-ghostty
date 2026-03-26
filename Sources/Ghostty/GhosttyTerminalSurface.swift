@@ -170,26 +170,33 @@ public class GhosttyTerminalSurface: NSView, NSTextInputClient {
         ghostty_surface_update_config(surface, config)
     }
 
-    /// Read the visible terminal screen text as a plain string.
-    /// Returns `nil` if the surface isn't ready or reading fails.
-    public func readText() -> String? {
+    /// Read visible terminal screen text as a plain string.
+    /// - Parameters:
+    ///   - topRow: First viewport row to read (0 = top of visible area). Defaults to 0.
+    ///   - bottomRow: Last viewport row to read (inclusive). Defaults to the last visible row.
+    /// - Returns: The plain text content, or `nil` if the surface isn't ready or reading fails.
+    public func readText(topRow: UInt32 = 0, bottomRow: UInt32 = .max) -> String? {
         guard let surface else { return nil }
 
         let size = ghostty_surface_size(surface)
         guard size.columns > 0, size.rows > 0 else { return nil }
+
+        let lastRow = UInt32(size.rows) - 1
+        let clampedBottom = min(bottomRow, lastRow)
+        guard topRow <= clampedBottom else { return nil }
 
         let selection = ghostty_selection_s(
             top_left: ghostty_point_s(
                 tag: GHOSTTY_POINT_VIEWPORT,
                 coord: GHOSTTY_POINT_COORD_TOP_LEFT,
                 x: 0,
-                y: 0
+                y: topRow
             ),
             bottom_right: ghostty_point_s(
                 tag: GHOSTTY_POINT_VIEWPORT,
                 coord: GHOSTTY_POINT_COORD_BOTTOM_RIGHT,
                 x: UInt32(size.columns) - 1,
-                y: UInt32(size.rows) - 1
+                y: clampedBottom
             ),
             rectangle: false
         )
