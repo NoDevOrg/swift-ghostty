@@ -29,5 +29,11 @@ let package = Package(
                 .linkedFramework("Carbon"),
             ]
         ),
+        .testTarget(
+            name: "GhosttyTests",
+            dependencies: [
+                .target(name: "Ghostty"),
+            ]
+        ),
     ]
 )
