@@ -8,9 +8,30 @@ A Swift package wrapping [Ghostty](https://github.com/ghostty-org/ghostty)'s ter
 - Swift 6.2+
 - [Zig](https://ziglang.org) 0.15.2 (installed automatically via [mise](https://mise.jdx.dev))
 
-## Setup
+## Installation
 
-The package depends on a pre-built GhosttyKit xcframework. Build it first:
+Add swift-ghostty as a Swift Package Manager dependency:
+
+```swift
+dependencies: [
+    .package(url: "https://github.com/NoDevOrg/swift-ghostty.git", from: "0.1.0"),
+]
+```
+
+Then add `Ghostty` to your target's dependencies:
+
+```swift
+.target(
+    name: "YourApp",
+    dependencies: [
+        .product(name: "Ghostty", package: "swift-ghostty"),
+    ]
+)
+```
+
+## Building the XCFramework
+
+The package depends on a pre-built GhosttyKit xcframework. Build it from the ghostty submodule:
 
 ```bash
 git submodule update --init --recursive
@@ -20,14 +41,6 @@ make xcframework
 This compiles the Ghostty C library from source using Zig and packages it as `Frameworks/GhosttyKit.xcframework.zip`.
 
 ## Usage
-
-Add the package as a dependency:
-
-```swift
-.package(path: "/path/to/swift-ghostty")
-```
-
-Then import and use:
 
 ```swift
 import Ghostty
