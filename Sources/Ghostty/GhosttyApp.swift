@@ -97,6 +97,12 @@ public final class GhosttyAppManager: ObservableObject {
         if let config { ghostty_config_free(config) }
     }
 
+    /// Apply a Ghostty configuration to all surfaces.
+    public func updateConfig(_ config: ghostty_config_t) {
+        guard let app else { return }
+        ghostty_app_update_config(app, config)
+    }
+
     // MARK: - Tick
 
     func tick() {

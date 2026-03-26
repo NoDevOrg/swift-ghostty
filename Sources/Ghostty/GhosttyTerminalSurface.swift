@@ -164,6 +164,12 @@ public class GhosttyTerminalSurface: NSView, NSTextInputClient {
         return exited
     }
 
+    /// Apply a Ghostty configuration to this surface.
+    public func updateConfig(_ config: ghostty_config_t) {
+        guard let surface else { return }
+        ghostty_surface_update_config(surface, config)
+    }
+
     /// Read the visible terminal screen text as a plain string.
     /// Returns `nil` if the surface isn't ready or reading fails.
     public func readText() -> String? {
