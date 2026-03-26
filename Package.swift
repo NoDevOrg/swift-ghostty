@@ -17,6 +17,9 @@ let package = Package(
             dependencies: [
                 .target(name: "GhosttyKit")
             ],
+            resources: [
+                .copy("Resources/Themes"),
+            ],
             linkerSettings: [
                 .linkedLibrary("c++"),
                 .linkedFramework("Carbon"),
