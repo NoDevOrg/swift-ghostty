@@ -90,7 +90,7 @@ public class GhosttyTerminalSurface: NSView, NSTextInputClient {
             macos: ghostty_platform_macos_s(nsview: Unmanaged.passUnretained(self).toOpaque())
         )
         config.userdata = Unmanaged.passUnretained(self).toOpaque()
-        config.scale_factor = Double(NSScreen.main?.backingScaleFactor ?? 2.0)
+        config.scale_factor = Double(window?.screen?.backingScaleFactor ?? NSScreen.main?.backingScaleFactor ?? 2.0)
         config.context = GHOSTTY_SURFACE_CONTEXT_WINDOW
 
         let command = pendingCommand
@@ -246,6 +246,10 @@ public class GhosttyTerminalSurface: NSView, NSTextInputClient {
             createSurface()
 
             if let surface {
+                // Set correct content scale for this window's display
+                if let scale = window?.backingScaleFactor {
+                    ghostty_surface_set_content_scale(surface, scale, scale)
+                }
                 let scaledSize = convertToBacking(frame.size)
                 ghostty_surface_set_size(surface, UInt32(scaledSize.width), UInt32(scaledSize.height))
             }
