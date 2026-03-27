@@ -38,6 +38,7 @@ public class GhosttyTerminalSurface: NSView, NSTextInputClient {
     /// Stored init parameters for deferred surface creation.
     private var pendingCommand: String?
     private var pendingWorkingDirectory: String?
+    private var pendingEnvironmentVariables: [String: String] = [:]
 
     /// Whether we have registered notification observers.
     private var observingNotifications = false
@@ -59,6 +60,7 @@ public class GhosttyTerminalSurface: NSView, NSTextInputClient {
         self.appManager = appManager
         self.pendingCommand = command
         self.pendingWorkingDirectory = workingDirectory
+        self.pendingEnvironmentVariables = environmentVariables
         super.init(frame: NSRect(x: 0, y: 0, width: 800, height: 600))
 
         // Note: we do NOT set wantsLayer — ghostty's Metal renderer manages its own layer.
@@ -95,8 +97,28 @@ public class GhosttyTerminalSurface: NSView, NSTextInputClient {
 
         let command = pendingCommand
         let workingDirectory = pendingWorkingDirectory
+        let envVars = pendingEnvironmentVariables
         pendingCommand = nil
         pendingWorkingDirectory = nil
+        pendingEnvironmentVariables = [:]
+
+        // Allocate C strings for environment variables
+        var cEnvVars: [ghostty_env_var_s] = envVars.map { key, value in
+            ghostty_env_var_s(key: strdup(key), value: strdup(value))
+        }
+        defer {
+            for env in cEnvVars {
+                free(UnsafeMutablePointer(mutating: env.key))
+                free(UnsafeMutablePointer(mutating: env.value))
+            }
+        }
+
+        if !cEnvVars.isEmpty {
+            cEnvVars.withUnsafeMutableBufferPointer { buf in
+                config.env_vars = buf.baseAddress
+                config.env_var_count = buf.count
+            }
+        }
 
         let createFn = { (cfg: inout ghostty_surface_config_s) -> ghostty_surface_t? in
             ghostty_surface_new(ghosttyApp, &cfg)
