@@ -24,7 +24,7 @@ public final class GhosttyAppManager: ObservableObject {
 
     /// Initialize the Ghostty app. Must be called from applicationDidFinishLaunching
     /// or later, after the NSApplication run loop is active.
-    public func initialize() {
+    public func initialize(loadDefaultConfig: Bool = true) {
         guard readyState == .loading else { return }
 
         // Initialize Ghostty global state — MUST be called before any other ghostty_* function
@@ -40,7 +40,9 @@ public final class GhosttyAppManager: ObservableObject {
             readyState = .error
             return
         }
-        ghostty_config_load_default_files(cfg)
+        if loadDefaultConfig {
+            ghostty_config_load_default_files(cfg)
+        }
         ghostty_config_finalize(cfg)
         self.config = cfg
 
