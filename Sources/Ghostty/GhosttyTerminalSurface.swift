@@ -353,7 +353,8 @@ public class GhosttyTerminalSurface: NSView, NSTextInputClient {
 
         let point = convert(event.locationInWindow, from: nil)
         let scaledPoint = convertToBacking(point)
-        ghostty_surface_mouse_pos(surface, scaledPoint.x, scaledPoint.y, Self.ghosttyMods(event.modifierFlags))
+        let flippedY = convertToBacking(bounds).height - scaledPoint.y
+        ghostty_surface_mouse_pos(surface, scaledPoint.x, flippedY, Self.ghosttyMods(event.modifierFlags))
         ghostty_surface_mouse_button(surface, GHOSTTY_MOUSE_PRESS, GHOSTTY_MOUSE_LEFT, Self.ghosttyMods(event.modifierFlags))
     }
 
@@ -361,7 +362,8 @@ public class GhosttyTerminalSurface: NSView, NSTextInputClient {
         guard let surface else { return }
         let point = convert(event.locationInWindow, from: nil)
         let scaledPoint = convertToBacking(point)
-        ghostty_surface_mouse_pos(surface, scaledPoint.x, scaledPoint.y, Self.ghosttyMods(event.modifierFlags))
+        let flippedY = convertToBacking(bounds).height - scaledPoint.y
+        ghostty_surface_mouse_pos(surface, scaledPoint.x, flippedY, Self.ghosttyMods(event.modifierFlags))
         ghostty_surface_mouse_button(surface, GHOSTTY_MOUSE_RELEASE, GHOSTTY_MOUSE_LEFT, Self.ghosttyMods(event.modifierFlags))
     }
 
@@ -369,7 +371,8 @@ public class GhosttyTerminalSurface: NSView, NSTextInputClient {
         guard let surface else { return }
         let point = convert(event.locationInWindow, from: nil)
         let scaledPoint = convertToBacking(point)
-        ghostty_surface_mouse_pos(surface, scaledPoint.x, scaledPoint.y, Self.ghosttyMods(event.modifierFlags))
+        let flippedY = convertToBacking(bounds).height - scaledPoint.y
+        ghostty_surface_mouse_pos(surface, scaledPoint.x, flippedY, Self.ghosttyMods(event.modifierFlags))
         ghostty_surface_mouse_button(surface, GHOSTTY_MOUSE_PRESS, GHOSTTY_MOUSE_RIGHT, Self.ghosttyMods(event.modifierFlags))
     }
 
@@ -377,7 +380,8 @@ public class GhosttyTerminalSurface: NSView, NSTextInputClient {
         guard let surface else { return }
         let point = convert(event.locationInWindow, from: nil)
         let scaledPoint = convertToBacking(point)
-        ghostty_surface_mouse_pos(surface, scaledPoint.x, scaledPoint.y, Self.ghosttyMods(event.modifierFlags))
+        let flippedY = convertToBacking(bounds).height - scaledPoint.y
+        ghostty_surface_mouse_pos(surface, scaledPoint.x, flippedY, Self.ghosttyMods(event.modifierFlags))
         ghostty_surface_mouse_button(surface, GHOSTTY_MOUSE_RELEASE, GHOSTTY_MOUSE_RIGHT, Self.ghosttyMods(event.modifierFlags))
     }
 
@@ -385,14 +389,16 @@ public class GhosttyTerminalSurface: NSView, NSTextInputClient {
         guard let surface else { return }
         let point = convert(event.locationInWindow, from: nil)
         let scaledPoint = convertToBacking(point)
-        ghostty_surface_mouse_pos(surface, scaledPoint.x, scaledPoint.y, Self.ghosttyMods(event.modifierFlags))
+        let flippedY = convertToBacking(bounds).height - scaledPoint.y
+        ghostty_surface_mouse_pos(surface, scaledPoint.x, flippedY, Self.ghosttyMods(event.modifierFlags))
     }
 
     override public func mouseDragged(with event: NSEvent) {
         guard let surface else { return }
         let point = convert(event.locationInWindow, from: nil)
         let scaledPoint = convertToBacking(point)
-        ghostty_surface_mouse_pos(surface, scaledPoint.x, scaledPoint.y, Self.ghosttyMods(event.modifierFlags))
+        let flippedY = convertToBacking(bounds).height - scaledPoint.y
+        ghostty_surface_mouse_pos(surface, scaledPoint.x, flippedY, Self.ghosttyMods(event.modifierFlags))
     }
 
     override public func scrollWheel(with event: NSEvent) {
