@@ -13,9 +13,13 @@ let package = Package(
             path: "Frameworks/GhosttyKit.xcframework.zip"
         ),
         .target(
+            name: "GhosttyVT"
+        ),
+        .target(
             name: "Ghostty",
             dependencies: [
-                .target(name: "GhosttyKit")
+                .target(name: "GhosttyKit"),
+                .target(name: "GhosttyVT"),
             ],
             resources: [
                 .copy("Resources/Themes"),
@@ -23,6 +27,12 @@ let package = Package(
             linkerSettings: [
                 .linkedLibrary("c++"),
                 .linkedFramework("Carbon"),
+            ]
+        ),
+        .testTarget(
+            name: "GhosttyTests",
+            dependencies: [
+                .target(name: "Ghostty"),
             ]
         ),
     ]
