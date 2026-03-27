@@ -170,6 +170,7 @@ public class GhosttyTerminalSurface: NSView, NSTextInputClient {
         ghostty_surface_update_config(surface, config)
     }
 
+
     /// Read visible terminal screen text as a plain string.
     /// - Parameters:
     ///   - topRow: First viewport row to read (0 = top of visible area). Defaults to 0.
