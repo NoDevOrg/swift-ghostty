@@ -423,48 +423,42 @@ public class GhosttyTerminalSurface: NSView, NSTextInputClient {
         guard let surface else { return }
         window?.makeFirstResponder(self)
 
-        let point = convert(event.locationInWindow, from: nil)
-        let scaledPoint = convertToBacking(point)
-        ghostty_surface_mouse_pos(surface, scaledPoint.x, scaledPoint.y, Self.ghosttyMods(event.modifierFlags))
+        let pos = convert(event.locationInWindow, from: nil)
+        ghostty_surface_mouse_pos(surface, pos.x, frame.height - pos.y, Self.ghosttyMods(event.modifierFlags))
         ghostty_surface_mouse_button(surface, GHOSTTY_MOUSE_PRESS, GHOSTTY_MOUSE_LEFT, Self.ghosttyMods(event.modifierFlags))
     }
 
     override public func mouseUp(with event: NSEvent) {
         guard let surface else { return }
-        let point = convert(event.locationInWindow, from: nil)
-        let scaledPoint = convertToBacking(point)
-        ghostty_surface_mouse_pos(surface, scaledPoint.x, scaledPoint.y, Self.ghosttyMods(event.modifierFlags))
+        let pos = convert(event.locationInWindow, from: nil)
+        ghostty_surface_mouse_pos(surface, pos.x, frame.height - pos.y, Self.ghosttyMods(event.modifierFlags))
         ghostty_surface_mouse_button(surface, GHOSTTY_MOUSE_RELEASE, GHOSTTY_MOUSE_LEFT, Self.ghosttyMods(event.modifierFlags))
     }
 
     override public func rightMouseDown(with event: NSEvent) {
         guard let surface else { return }
-        let point = convert(event.locationInWindow, from: nil)
-        let scaledPoint = convertToBacking(point)
-        ghostty_surface_mouse_pos(surface, scaledPoint.x, scaledPoint.y, Self.ghosttyMods(event.modifierFlags))
+        let pos = convert(event.locationInWindow, from: nil)
+        ghostty_surface_mouse_pos(surface, pos.x, frame.height - pos.y, Self.ghosttyMods(event.modifierFlags))
         ghostty_surface_mouse_button(surface, GHOSTTY_MOUSE_PRESS, GHOSTTY_MOUSE_RIGHT, Self.ghosttyMods(event.modifierFlags))
     }
 
     override public func rightMouseUp(with event: NSEvent) {
         guard let surface else { return }
-        let point = convert(event.locationInWindow, from: nil)
-        let scaledPoint = convertToBacking(point)
-        ghostty_surface_mouse_pos(surface, scaledPoint.x, scaledPoint.y, Self.ghosttyMods(event.modifierFlags))
+        let pos = convert(event.locationInWindow, from: nil)
+        ghostty_surface_mouse_pos(surface, pos.x, frame.height - pos.y, Self.ghosttyMods(event.modifierFlags))
         ghostty_surface_mouse_button(surface, GHOSTTY_MOUSE_RELEASE, GHOSTTY_MOUSE_RIGHT, Self.ghosttyMods(event.modifierFlags))
     }
 
     override public func mouseMoved(with event: NSEvent) {
         guard let surface else { return }
-        let point = convert(event.locationInWindow, from: nil)
-        let scaledPoint = convertToBacking(point)
-        ghostty_surface_mouse_pos(surface, scaledPoint.x, scaledPoint.y, Self.ghosttyMods(event.modifierFlags))
+        let pos = convert(event.locationInWindow, from: nil)
+        ghostty_surface_mouse_pos(surface, pos.x, frame.height - pos.y, Self.ghosttyMods(event.modifierFlags))
     }
 
     override public func mouseDragged(with event: NSEvent) {
         guard let surface else { return }
-        let point = convert(event.locationInWindow, from: nil)
-        let scaledPoint = convertToBacking(point)
-        ghostty_surface_mouse_pos(surface, scaledPoint.x, scaledPoint.y, Self.ghosttyMods(event.modifierFlags))
+        let pos = convert(event.locationInWindow, from: nil)
+        ghostty_surface_mouse_pos(surface, pos.x, frame.height - pos.y, Self.ghosttyMods(event.modifierFlags))
     }
 
     override public func scrollWheel(with event: NSEvent) {
