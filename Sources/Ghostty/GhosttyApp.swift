@@ -242,7 +242,9 @@ private func ghosttyWriteClipboardCallback(
 
     for i in 0..<len {
         let item = content[i]
-        if let data = item.data {
+        guard let data = item.data else { continue }
+        let mime = item.mime.map { String(cString: $0) }
+        if mime == nil || mime == "text/plain" {
             let str = String(cString: data)
             pasteboard.setString(str, forType: .string)
         }
